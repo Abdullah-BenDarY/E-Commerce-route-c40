@@ -5,14 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.e_commerce_route_c40.databinding.ItemCategoryBinding
-import com.route.data.api.model.response.BrandDto
 import com.route.domain.model.Brand
 import com.route.domain.model.Category
 
 
 class HomeBrandsAdapter : RecyclerView.Adapter<HomeBrandsAdapter.Holder>() {
-    var brandsList: List<BrandDto>? = null // implelent listOf category
-    var onClick: ((BrandDto,Int) -> Unit)? = null
+    var brandsList: List<Brand>? = null
+    var onClick: ((Brand,Int) -> Unit)? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -23,25 +22,25 @@ class HomeBrandsAdapter : RecyclerView.Adapter<HomeBrandsAdapter.Holder>() {
     override fun getItemCount() = brandsList?.size?: 0
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        val category = brandsList!![position]
-        holder.bind(category)
+        val brands = brandsList!![position]
+        holder.bind(brands)
         onClick?.let {
             holder.itemView.setOnClickListener {
-                onClick?.invoke(category,position)
+                onClick?.invoke(brands,position)
             }
 
         }
     }
 
 
-    fun changeData(brands: List<BrandDto>?){
+    fun changeData(brands: List<Brand>?){
         brandsList = brands
         notifyDataSetChanged()
     }
 
     inner class Holder(private val binding: ItemCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(brandsList: BrandDto ) { // implelent listOf category
+        fun bind(brandsList: Brand ) {
             binding.apply {
                 Glide.with(binding.root.context)
                     .load(brandsList.image)
