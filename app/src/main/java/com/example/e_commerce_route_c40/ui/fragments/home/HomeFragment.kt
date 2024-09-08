@@ -3,6 +3,7 @@ package com.example.e_commerce_route_c40.ui.fragments.home
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.e_commerce_route_c40.R
 import com.example.e_commerce_route_c40.adapters.HomeCategoriesAdapter
 
@@ -65,8 +66,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                 // action to specific fragment
             }
             tvViewAllCategories.setOnClickListener {
-                // action to all categories fragment
-
+                findNavController().navigate(
+                    HomeFragmentDirections.actionHomeFragmentToCategoryFragment())
             }
             rvCategories.setOnClickListener {
                 // action to specific category fragment
