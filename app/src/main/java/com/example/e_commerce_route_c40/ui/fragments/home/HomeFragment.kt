@@ -1,14 +1,16 @@
 package com.example.e_commerce_route_c40.ui.fragments.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.e_commerce_route_c40.R
+import com.example.e_commerce_route_c40.adapters.HomeBrandsAdapter
 import com.example.e_commerce_route_c40.adapters.HomeCategoriesAdapter
-
-import com.example.e_commerce_route_c40.databinding.FragmentHomeBinding
 import com.example.e_commerce_route_c40.base.BaseFragment
+import com.example.e_commerce_route_c40.databinding.FragmentHomeBinding
+import com.example.e_commerce_route_c40.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -16,9 +18,10 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 //  //  private lateinit var offersAdapter: OffersAdapter
     private lateinit var adapterCategories: HomeCategoriesAdapter
+    private lateinit var adapterBrands: HomeBrandsAdapter
 //    private lateinit var adapterHomeAppliance: AdapterHomeAppliance
 
-    val _viewModel :HomeViewModel by viewModels()
+    private val _viewModel :HomeViewModel by viewModels()
 
     override fun initViewModel(): HomeViewModel {
         return _viewModel
@@ -31,16 +34,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         initViews()
         observeLiveData()
         viewModel.getCategoryList()
+        viewModel.getBrandsList()
     }
 
     private fun observeLiveData() {
         viewModel.categoriesLiveData.observe(viewLifecycleOwner){categories->
             adapterCategories.changeData(categories)
         }
+
+        viewModel.brandsLiveData.observe(viewLifecycleOwner) { brands ->
+            adapterBrands.changeData(brands)
+        }
     }
 
     private fun initViews() {
         adapterCategories = HomeCategoriesAdapter()
+        adapterBrands = HomeBrandsAdapter()
+
 //        adapterHomeAppliance.setOncCartClick {
 //            // action add to cart
 //        }
@@ -56,6 +66,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 //        }
         binding.apply {
             rvCategories.adapter = adapterCategories
+            rvBrands.adapter = adapterBrands
+
             etSearch.setOnClickListener {
                 // Handle search button click
             }
